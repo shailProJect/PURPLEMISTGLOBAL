@@ -4,7 +4,7 @@ export const leadership = [
     role: 'Director',
     qualification: 'B.Com Graduate',
     mobile: '9004271033',
-    image: '/images/krishnan.jpg',
+    image: 'https://res.cloudinary.com/dam35mimk/image/upload/v1784286099/krishnan_xzin8h.jpg',
     points: [
       'Extensive experience in Import & Procurement.',
       'Worked with International Import Firms.',
@@ -19,7 +19,7 @@ export const leadership = [
     role: 'Additional Director',
     qualification: 'Graduate',
     mobile: '8788981898',
-    image: '/images/digvijay.jpg',
+    image: 'https://res.cloudinary.com/dam35mimk/image/upload/v1784286099/digvijay_l9xknx.jpg',
     points: [
       'Former Assistant Manager, Jio Infocomm Pvt Ltd.',
       'Former Audit Executive, PKF S&S LLP.',
