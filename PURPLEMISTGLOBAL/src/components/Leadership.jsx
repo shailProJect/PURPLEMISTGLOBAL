@@ -32,7 +32,15 @@ export default function Leadership() {
             >
               <div className="flex items-center gap-5 mb-6">
                 <div className="w-20 h-20 rounded-2xl gold-gradient flex items-center justify-center font-heading font-bold text-2xl text-navy shrink-0">
-                  {initials(person.name)}
+                  {person.image ? (
+                    <img
+                      src={person.image}
+                      alt={person.name}
+                      className="w-full h-full object-cover rounded-2xl"
+                    />
+                  ) : (
+                    initials(person.name)
+                  )}
                 </div>
                 <div>
                   <h3 className="font-heading font-semibold text-xl text-navy">{person.name}</h3>
