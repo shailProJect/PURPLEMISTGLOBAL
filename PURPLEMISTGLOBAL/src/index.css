@@ -1,0 +1,142 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&family=Montserrat:wght@600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-navy: #0B1E3B;
+  --color-navy-light: #122a52;
+  --color-royal: #153B72;
+  --color-gold: #D4AF37;
+  --color-gold-light: #F1D98B;
+  --color-offwhite: #F7F8FC;
+  --color-ink: #222222;
+
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-button: 'Montserrat', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-ink);
+  background-color: #ffffff;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5 { font-family: var(--font-heading); }
+
+::selection { background: var(--color-gold); color: var(--color-navy); }
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--color-offwhite); }
+::-webkit-scrollbar-thumb { background: var(--color-royal); border-radius: 999px; }
+
+.section-pad { padding-top: 6rem; padding-bottom: 6rem; }
+
+.container-px { padding-left: 1.25rem; padding-right: 1.25rem; }
+@media (min-width: 1024px) { .container-px { padding-left: 3rem; padding-right: 3rem; } }
+
+.eyebrow {
+  font-family: var(--font-button);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  color: var(--color-gold);
+  font-weight: 700;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.glass-dark {
+  background: rgba(11, 30, 59, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(212, 175, 55, 0.18);
+}
+
+.gold-gradient {
+  background: linear-gradient(135deg, #D4AF37 0%, #F1D98B 50%, #B8860B 100%);
+}
+
+.navy-gradient {
+  background: linear-gradient(160deg, #0B1E3B 0%, #153B72 60%, #0B1E3B 100%);
+}
+
+.btn-primary {
+  font-family: var(--font-button);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  background: linear-gradient(135deg, #D4AF37, #B8860B);
+  color: #0B1E3B;
+  box-shadow: 0 10px 30px -10px rgba(212, 175, 55, 0.5);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 16px 40px -12px rgba(212, 175, 55, 0.65); }
+
+.btn-outline {
+  font-family: var(--font-button);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  border: 1.5px solid rgba(255,255,255,0.5);
+  color: #fff;
+  transition: all 0.35s ease;
+}
+.btn-outline:hover { background: rgba(255,255,255,0.12); border-color: var(--color-gold); }
+
+.card-premium {
+  background: #fff;
+  border-radius: 1.25rem;
+  box-shadow: 0 20px 60px -25px rgba(11, 30, 59, 0.25);
+  border: 1px solid rgba(11,30,59,0.06);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.card-premium:hover { transform: translateY(-8px); box-shadow: 0 30px 70px -25px rgba(212, 175, 55, 0.35); }
+
+.divider-gold {
+  height: 3px;
+  width: 64px;
+  background: linear-gradient(90deg, var(--color-gold), var(--color-gold-light));
+  border-radius: 999px;
+}
+
+/* Lightweight dark mode: class-based override for light sections */
+html.dark body { background-color: var(--color-navy); }
+html.dark section.bg-white,
+html.dark section.bg-offwhite,
+html.dark footer.bg-white {
+  background-color: var(--color-navy) !important;
+}
+html.dark .text-navy { color: #F7F8FC !important; }
+html.dark .text-ink\/75,
+html.dark .text-ink\/70,
+html.dark .text-ink\/65,
+html.dark .text-ink\/60,
+html.dark .text-ink\/50 { color: rgba(247, 248, 252, 0.65) !important; }
+html.dark .card-premium {
+  background-color: var(--color-navy-light);
+  border-color: rgba(212, 175, 55, 0.15);
+}
+html.dark .card-premium:hover { box-shadow: 0 30px 70px -25px rgba(212, 175, 55, 0.25); }
+html.dark input, html.dark textarea {
+  background-color: rgba(255,255,255,0.06);
+  color: #F7F8FC;
+  border-color: rgba(212, 175, 55, 0.25) !important;
+}
+html.dark input::placeholder, html.dark textarea::placeholder { color: rgba(247, 248, 252, 0.4); }
+html.dark .border-navy\/5,
+html.dark .border-navy\/10 { border-color: rgba(212, 175, 55, 0.15) !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
