@@ -1,77 +1,80 @@
-# Purplemist Global Private Limited — Corporate Website
+# Frontend (Vite + React 19)
 
-Premium, animated, fully responsive B2B corporate website built with React (Vite), Tailwind CSS v4, and Framer Motion.
+This project was migrated from Create React App / craco to [Vite](https://vitejs.dev/) — same UI, same components, same behavior. Only the build tooling changed.
 
-## Stack
+## Getting Started
 
-- React 19 + Vite
-- Tailwind CSS v4 (via `@tailwindcss/vite`)
-- Framer Motion (page/scroll animations)
-- React Router DOM (routing + 404 page)
-- React Hook Form (contact form validation)
-- EmailJS (contact form email delivery)
-- React CountUp (animated statistics)
-- AOS (scroll animations)
-- Swiper (testimonials slider)
-- React Icons
-
-## Getting started
+Install dependencies (a `.npmrc` with `legacy-peer-deps=true` is included, since `@studio-freight/react-lenis` hasn't published a React 19 peer range yet):
 
 ```bash
 npm install
-npm run dev       # local dev server
-npm run build     # production build -> dist/
-npm run preview   # preview the production build
 ```
 
-## Before going live
+Run the dev server (http://localhost:3000):
 
-1. **Hero video** — drop a real background video at `public/hero-video.mp4` (and an optional
-   poster image at `public/hero-poster.jpg`). The hero gracefully falls back to the animated
-   navy gradient + gold trade-route graphic if no video is present.
+```bash
+npm run dev
+```
 
-2. **EmailJS** — the contact form (`src/components/Contact.jsx`) is wired to EmailJS but needs
-   your own credentials. Sign up at https://www.emailjs.com/, then replace:
-   ```js
-   const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID';
-   const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
-   const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY';
-   ```
-   Until configured, submissions simulate success so you can demo the flow.
+Build for production (outputs to `build/`, same as the original CRA setup):
 
-3. **Contact details / map** — update the office address, phone numbers, email and the Google
-   Maps embed URL in `src/components/Contact.jsx` and `src/components/Footer.jsx`.
+```bash
+npm run build
+```
 
-4. **WhatsApp number** — update the number in `src/components/WhatsAppButton.jsx`.
+Preview the production build locally:
 
-5. **Content** — all copy for products, leadership, team, testimonials, countries and the
-   import process lives in `src/data/products.js` and `src/data/company.js`. Edit there rather
-   than in the components.
+```bash
+npm run preview
+```
 
-6. **Domain / SEO** — update `public/robots.txt` and `public/sitemap.xml` with your real domain,
-   and add a real `public/og-image.jpg` (1200x630) for social sharing previews.
+## Environment variables
 
-## Notes on design choices
-
-- No stock photography is bundled (none was supplied and none could be safely sourced), so
-  the design leans on gradients, iconography (`react-icons`), and an animated gold "trade
-  route" motif instead of photos. Swap in real photography (director portraits, warehouse/
-  port imagery, product photos) wherever you see an icon-based placeholder for an even more
-  premium finish.
-- "Global Presence" is a stylised wireframe globe with animated trade routes rather than a
-  literal geographic map, keeping the look consistent with the premium/abstract direction
-  used elsewhere on the page.
-- Dark/light mode toggle is implemented as a lightweight CSS override (see the `html.dark`
-  rules at the bottom of `src/index.css`) rather than a full parallel design system.
-
-## Folder structure
+Vite only exposes variables prefixed with `VITE_` to client code (unlike CRA's `REACT_APP_` prefix). Copy `.env.example` to `.env` and set:
 
 ```
-src/
-  components/   Navbar, Hero, About, Products, WhyChooseUs, ImportProcess,
-                GlobalPresence, Leadership, OurTeam, Highlights, Testimonials,
-                Contact, Footer, WhatsAppButton, BackToTop, ScrollProgress,
-                ThemeToggle, Loader
-  data/         products.js, company.js — all editable content
-  pages/        Home.jsx, NotFound.jsx
+VITE_BACKEND_URL=http://localhost:8000
 ```
+
+This replaces the old `REACT_APP_BACKEND_URL` used in `src/pages/Contact.jsx`.
+
+## What changed from the CRA version
+
+- `craco.config.js`, `plugins/health-check/*`, and `jsconfig.json` removed — replaced by `vite.config.js`, which keeps the same `@` → `src` path alias.
+- `public/index.html` moved to root `index.html` (Vite convention) with a `<script type="module" src="/src/main.jsx">` tag added; all existing head/body content (fonts, PostHog snippet, emergent script) preserved as-is.
+- `src/index.js` → `src/main.jsx`, `src/App.js` → `src/App.jsx` (renamed so the JSX inside is parsed correctly; content unchanged).
+- `process.env.REACT_APP_BACKEND_URL` → `import.meta.env.VITE_BACKEND_URL` in `src/pages/Contact.jsx`.
+- `postcss.config.js` and `tailwind.config.js` converted from CommonJS to ESM syntax (package.json now has `"type": "module"`).
+- `tailwind.config.js` content globs updated to point at root `index.html` instead of `public/index.html`.
+- `package.json` scripts now run `vite` / `vite build` / `vite preview` instead of `craco`; CRA-only packages (`react-scripts`, `@craco/craco`, `cra-template`, `@emergentbase/visual-edits`, `dotenv`) removed. All UI dependencies (React 19, Radix UI, Tailwind, shadcn/ui, framer-motion, etc.) are untouched.
+
+No component, page, styling, or UI logic was modified — only the build system.
+
+## Node 21
+
+`npm install` / `npm run build` were tested clean end-to-end (Vite 8, React 19, all deps).
+
+One thing worth knowing: **Vite 8 officially supports Node `^20.19.0 || >=22.12.0`** — it does not list Node 21 in its support matrix, because 21 was a short-lived non-LTS release that reached end-of-life in June 2024. Nothing in this codebase uses a Node-21-only API, so it should run fine, but you may see an `npm warn EBADENGINE` notice on install (harmless — `engines` in `package.json` has been relaxed to `>=18.0.0` so it won't block you). If this is a new setup rather than matching an existing constraint, **Node 22 LTS** is the safer long-term choice.
+
+## SEO
+
+- `index.html` — removed leftover scaffold cruft (Emergent branding, PostHog snippet) and replaced with a real title, meta description, Open Graph/Twitter tags, canonical URL, and Organization JSON-LD.
+- `src/components/SEO.jsx` — a small `react-helmet-async` wrapper. Each page (`Home`, `About`, `Products`, `Clients`, `Contact`) now sets its own `<title>`, description, and canonical URL via `<SEO />`; `Login` and `Admin` are marked `noindex`.
+- `public/robots.txt` and `public/sitemap.xml` added.
+- **Caveat:** this is still a client-rendered SPA. Googlebot executes JS and will pick up the per-page tags, but crawlers/social scrapers that don't run JS will only see the base `index.html` meta tags. If you need guaranteed SEO for non-JS crawlers (or faster first paint), the next step up is prerendering/SSR (e.g. Next.js or a prerender build step) — happy to help with that if it becomes a priority.
+- Update the placeholder URLs (`https://www.purplemist.global/...`) and add real `/favicon.png` and `/og-image.jpg` files under `public/` before deploying.
+
+## Enquiry emails (Resend)
+
+The contact form (`src/pages/Contact.jsx`) posts to `${VITE_BACKEND_URL}/api/enquiries`. A minimal backend that handles that route with [Resend](https://resend.com) is included in `server/`:
+
+```bash
+cd server
+npm install
+cp .env.example .env   # fill in RESEND_API_KEY and TO_EMAIL
+npm run dev             # http://localhost:5000
+```
+
+It validates the payload, emails your inbox (`TO_EMAIL`) with the enquiry details (reply-to set to the enquirer), and sends the enquirer a short acknowledgement. See `server/.env.example` for the required variables — until you verify `purplemist.global` as a sending domain in Resend, use the sandbox sender (`onboarding@resend.dev`), which only delivers to your own Resend account email.
+
+The `Admin` and `Login` pages still use mock/placeholder data (as noted in the original code comments) — they aren't wired to a real backend yet. Out of scope here unless you want that built too.
